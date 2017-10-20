@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>no-refresh-Page</title>
+    <style>
+    * {margin: 0; padding: 0;}
+    .container { width: 980px; margin: 0 auto;}
+    .nav { padding-top: 100px; border-bottom: 1px solid #ccc;}
+    .nav li { display: inline-block; margin-right: 20px; height: 40px; line-height: 40px; cursor: pointer;}
+    .nav .active {color: red;}
+    .page { display: none; margin-top: 30px;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <ul class="nav" id="nav">
+            <li class="active" data-hash="index">主页</li>
+            <li data-hash="news">新闻</li>
+            <li data-hash="video">视频</li>
+            <li data-hash="pic">图片</li>
+            <li data-hash="concat">关于我们</li>
+        </ul>
+        <div class="page" data-hash="index">主页-欢迎您！</div>
+        <div class="page" data-hash="news">新闻页-欢迎您！</div>
+        <div class="page" data-hash="video">视频页-欢迎您！</div>
+        <div class="page" data-hash="pic">图片页-欢迎您！</div>
+        <div class="page" data-hash="concat">关于我们页-欢迎您！</div>
+    </div>
+    <script>
+        var oNav  = document.querySelector('#nav'),
+            aLi   = oNav.querySelectorAll('li'),
+            aPage = document.querySelectorAll('.page');
+
+        //页面初始化；
+        autoToggle();
+
+        //点击的时候
+        for(var i=0, l=aLi.length; i<l; i++){
+            var oLi = aLi[i];
+
+            oLi.onclick = function(){
+                var hash = this.dataset.hash;
+                toggle(hash);
+                window.location.hash = hash;
+            };
+        }
+
+        //hash切换的时候
+        window.onhashchange = autoToggle;
+
+        //自动切换
+        function autoToggle(){
+            var hash = location.hash.substring(1);
+            toggle(hash || 'index');
+        }
+
+        //切换核心
+        function toggle(hash){
+
+            for(var i=0, l=aPage.length; i<l; i++){
+                var oPage = aPage[i];
+                var oLi  = aLi[i];
+
+                oLi.className = '';
+                oPage.style='none';
+
+                if(oPage.dataset.hash === hash){
+                    oPage.style.display='block';
+                }
+
+                if(oLi.dataset.hash === hash){
+                    oLi.className = 'active';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
